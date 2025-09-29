@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-ms
+  template:
+    metadata:
+      labels:
+        app: order-ms
+    spec:
+      containers:
+        - name: order-ms
+          image: order-ms:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+          env:
+            - name: INVENTORY_SERVICE_URL
+              value: http://inventory-ms:8082/inventory
+            - name: PRODUCT_SERVICE_URL
+              value: http://product-ms:8080/product

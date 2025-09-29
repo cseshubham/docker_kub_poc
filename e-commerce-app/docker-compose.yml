@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  product-ms:
+    build:
+      context: ./product-ms
+      dockerfile: Dockerfile
+    image: product-ms:latest
+    container_name: product-ms
+    ports:
+      - "8080:8080"
+    networks:
+      - microservice-net
+
+  order-ms:
+    build:
+      context: ./order-ms
+      dockerfile: Dockerfile
+    image: order-ms:latest
+    container_name: order-ms
+    ports:
+      - "8081:8081"
+    networks:
+      - microservice-net
+    environment:
+      INVENTORY_SERVICE_URL: http://inventory-ms:8082/inventory
+      PRODUCT_SERVICE_URL: http://product-ms:8080/product
+
+  inventory-ms:
+    build:
+      context: ./inventory-ms
+      dockerfile: Dockerfile
+    image: inventory-ms:latest
+    container_name: inventory-ms
+    ports:
+      - "8082:8082"
+    networks:
+      - microservice-net
+
+networks:
+  microservice-net:
+    driver: bridge

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-ms
+  template:
+    metadata:
+      labels:
+        app: inventory-ms
+    spec:
+      containers:
+        - name: inventory-ms
+          image: inventory-ms:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
